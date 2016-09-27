@@ -1,0 +1,32 @@
+{
+  "name": "immutils",
+  "version": "0.0.1",
+  "description": "Utilities to accessing, modifying, and validating immutable objects in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node --autotest --verbose index.spec.js --watch *.js",
+    "cover": "istanbul cover --include-all-sources jasmine-node --verbose index.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walnutgeek/immutils.git"
+  },
+  "keywords": [
+    "immutable",
+    "javascript",
+    "json-pointer",
+    "schema",
+    "validation"
+  ],
+  "author": "walnutgeek",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/walnutgeek/immutils/issues"
+  },
+  "homepage": "https://github.com/walnutgeek/immutils#readme",
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "jasmine": "^2.5.2",
+    "jasmine-node": "^1.14.5"
+  }
+}

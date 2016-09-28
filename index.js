@@ -212,31 +212,14 @@ JsonPointer.prototype.set = function (obj, value) {
   return clones[0];
 }
 
-
-function fn_name(f) {
-  var m = f.toString().match(/^\s*function\s*([^\s(]+)/);
-  return m ? m[1] : "";
-}
-
-function obj_zip(vals,keys) {
-  var obj = {};
-  var get_key = keys;
-  if(Array.isArray(keys)){
-    get_key = function(v,i){ return keys[i]; };
+module.exports = {
+  JsonPointer: JsonPointer ,
+  private: {
+    isDigit: isDigit,
+    isArrayLike: isArrayLike,
+    escape: escape,
+    unescape: unescape,
+    cloneObject: cloneObject,
+    clone: clone
   }
-  vals.forEach( function(v,i){ obj[get_key(v,i)] = v;} );
-  return obj;
-}
-
-module.exports = obj_zip([
-    JsonPointer
-],fn_name);
-
-module.exports.private = obj_zip([
-  isDigit,
-  isArrayLike,
-  escape,
-  unescape,
-  cloneObject,
-  clone
-], fn_name);
+};

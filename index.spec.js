@@ -115,6 +115,18 @@ describe("JsonPointer", function() {
     expect(next!==v).toBe(true);
     expect(JSON.stringify(v)).toBe(s);
     expect(JSON.stringify(next)).toBe('{"a":4,"s":[1,0,null,null,null,"x"],"x":{"z":5,"y":{}}}');
-
+    next = jp('/s/x').set(next,'q');
+    expect(next!==v).toBe(true);
+    expect(JSON.stringify(v)).toBe(s);
+    expect(JSON.stringify(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}}}');
+    //TODO more tests
   });
+
+  it("toString", function() {
+    ['/', '/a','/a/5','/x/3/x','/x~0/3/x~1','/~0','/~1'].forEach(function(s){
+      expect(s).toBe(jp(s).toString());
+    });
+  });
+
 });
+

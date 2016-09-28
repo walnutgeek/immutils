@@ -143,6 +143,10 @@ JsonPointer.prototype._search_obj = function (obj, stack){
   return obj;
 };
 
+JsonPointer.prototype.toString = function () {
+  return this.path.map(escape).join('/')
+};
+
 JsonPointer.prototype.get = function (obj) {
   if( this.root ){
     return obj;
@@ -182,16 +186,24 @@ JsonPointer.prototype.set = function (obj, value) {
   }
   var clones = [];
   if( obj != null ){
-    var stack = [obj]
+    var stack = [obj];
     this._search_obj(obj, stack);
     clones = stack.map(clone);
   }
   var len = this.path.length;
-  while( clones.length < len-1 ) {
-    clone.push(this.arraysLike[i + 1] ? [] : {});
-  }
   if(clones.length == len) {
     clones.pop();
+  }
+  for(var i = 0 ; i < len -1 ; i++){
+    var c = clones[i];
+    if (c == null){
+      clones[i] =  this.arraysLike[i + 1] ? [] : {};
+    }else if(Array.isArray(c) && !this.arraysLike[i + 1]){
+      clones[i] = cloneObject(c);
+    }
+  }
+  while( clones.length < len-1 ) {
+    clone.push();
   }
   for (var i = 0 ; i < (clones.length - 1) ; i++) {
     var k = this._key(i+1, clones[i]) ;

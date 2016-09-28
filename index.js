@@ -82,8 +82,8 @@ function clone(obj){
 
 function extract_array_key(elem,obj){
   if( Array.isArray(obj) ){
+    var len = obj.length;
     if(elem === '-'){
-      var len = obj.length;
       return len;
     }else{
       var p = +elem;

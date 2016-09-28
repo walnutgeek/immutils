@@ -60,6 +60,7 @@ describe("JsonPointer", function() {
   function jp(p) {
     return new immutils.JsonPointer(p);
   }
+  var str = JSON.stringify;
   it("constructor error", function() {
     expect(function(){ jp('s/1')})
         .toThrow(new Error('JSON pointer has to start with "/"'));
@@ -100,25 +101,37 @@ describe("JsonPointer", function() {
 
   it("remove", function() {
     var v = {a: 4, s: [1,0] ,x : {z:5,y:{q: undefined}}};
-    var s = JSON.stringify(v);
+    var s = str(v);
     var next = jp('/s/5').remove(v);
     expect(next).toBe(v);
     next = jp('/s/1').remove(v);
+    expect(undefined).toBe(jp('/').remove(v));
     expect(next!==v).toBe(true);
-    expect(JSON.stringify(v)).toBe(s);
-    expect(JSON.stringify(next)).toBe('{"a":4,"s":[1],"x":{"z":5,"y":{}}}')
+    expect(str(v)).toBe(s);
+    expect(str(next)).toBe('{"a":4,"s":[1],"x":{"z":5,"y":{}}}')
   });
   it("set", function() {
     var v = {a: 4, s: [1,0] ,x : {z:5,y:{q: undefined}}};
-    var s = JSON.stringify(v);
+    var s = str(v);
     var next = jp('/s/5').set(v,'x');
     expect(next!==v).toBe(true);
-    expect(JSON.stringify(v)).toBe(s);
-    expect(JSON.stringify(next)).toBe('{"a":4,"s":[1,0,null,null,null,"x"],"x":{"z":5,"y":{}}}');
+    expect(str(v)).toBe(s);
+    expect(str(next)).toBe('{"a":4,"s":[1,0,null,null,null,"x"],"x":{"z":5,"y":{}}}');
+    expect(0).toBe(jp('/s/1').get(next));
+    expect(0).toBe(jp('/s/-1').get(v));
+    expect('x').toBe(jp('/s/-1').get(next));
+    expect('ha').toBe(jp('/').set(v,'ha'));
     next = jp('/s/x').set(next,'q');
     expect(next!==v).toBe(true);
-    expect(JSON.stringify(v)).toBe(s);
-    expect(JSON.stringify(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}}}');
+    expect(str(v)).toBe(s);
+    expect(str(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}}}');
+    expect(0).toBe(jp('/s/1').get(next));
+    next = jp('/q/p/r/s/t').set(next,'q');
+    expect(str(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}},"q":{"p":{"r":{"s":{"t":"q"}}}}}');
+    next = jp('/q/p2/-/s/t').set(next,'q');
+    expect(str(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}},"q":{"p":{"r":{"s":{"t":"q"}}},"p2":[{"s":{"t":"q"}}]}}' );
+    next = jp('/q/p2/-/s/t').set(next,'q');
+    expect(str(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}},"q":{"p":{"r":{"s":{"t":"q"}}},"p2":[{"s":{"t":"q"}},{"s":{"t":"q"}}]}}');
   });
 
   it("toString", function() {

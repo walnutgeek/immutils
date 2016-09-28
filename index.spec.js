@@ -119,7 +119,6 @@ describe("JsonPointer", function() {
     expect(next!==v).toBe(true);
     expect(JSON.stringify(v)).toBe(s);
     expect(JSON.stringify(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}}}');
-    //TODO more tests
   });
 
   it("toString", function() {

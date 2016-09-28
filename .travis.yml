@@ -1,0 +1,7 @@
+node_js:
+- "4"
+- "5"
+language: node_js
+before_install: nvm ls-remote
+install: npm install
+script: npm run travis

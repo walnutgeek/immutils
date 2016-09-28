@@ -1,6 +1,12 @@
 # immutils
 Access, modify(copy-on-change) JavaScript objects.
 
+[![travis-ci.org](https://travis-ci.org/walnutgeek/immutils.svg?branch=master)](https://travis-ci.org/walnutgeek/immutils)
+[![codecov.io](https://codecov.io/github/walnutgeek/immutils/coverage.svg?branch=master)](https://codecov.io/github/walnutgeek/immutils?branch=master)
+[![npm version](https://badge.fury.io/js/immutils.svg)](https://www.npmjs.com/package/immutils)
+[![npm downloads](https://img.shields.io/npm/dm/immutils.svg)](https://npmjs.org/package/immutils)
+[![Dependency Status](https://gemnasium.com/walnutgeek/immutils.svg)](https://gemnasium.com/walnutgeek/immutils)
+
 API use plain objects and arrays to store data.
 JSON Pointer is used to refer to particular location
 in object tree. Rather then mutate object tree, API

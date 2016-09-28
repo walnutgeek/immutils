@@ -202,9 +202,6 @@ JsonPointer.prototype.set = function (obj, value) {
       clones[i] = cloneObject(c);
     }
   }
-  while( clones.length < len-1 ) {
-    clone.push();
-  }
   for (var i = 0 ; i < (clones.length - 1) ; i++) {
     var k = this._key(i+1, clones[i]) ;
     clones[i][k] = clones[i+1];

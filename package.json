@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jasmine-node --autotest --verbose index.spec.js --watch *.js",
-    "cover": "istanbul cover --include-all-sources jasmine-node --verbose index.spec.js"
+    "cover": "istanbul cover --include-all-sources jasmine-node --verbose index.spec.js",
+    "travis": "npm run cover && codecov < ./coverage/coverage.json"
   },
+  "files":["README.md","index.js"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/walnutgeek/immutils.git"
@@ -25,6 +27,7 @@
   },
   "homepage": "https://github.com/walnutgeek/immutils#readme",
   "devDependencies": {
+    "codecov": "^1.0.1",
     "istanbul": "^0.4.5",
     "jasmine": "^2.5.2",
     "jasmine-node": "^1.14.5"

@@ -1,6 +1,6 @@
 {
   "name": "immutils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Utilities to accessing, modifying, and validating immutable objects in JavaScript",
   "main": "index.js",
   "scripts": {

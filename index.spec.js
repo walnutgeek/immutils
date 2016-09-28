@@ -109,6 +109,7 @@ describe("JsonPointer", function() {
     expect(next!==v).toBe(true);
     expect(str(v)).toBe(s);
     expect(str(next)).toBe('{"a":4,"s":[1],"x":{"z":5,"y":{}}}')
+    expect(str(jp('/x/z').remove(next))).toBe('{"a":4,"s":[1],"x":{"y":{}}}')
   });
   it("set", function() {
     var v = {a: 4, s: [1,0] ,x : {z:5,y:{q: undefined}}};
@@ -132,6 +133,8 @@ describe("JsonPointer", function() {
     expect(str(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}},"q":{"p":{"r":{"s":{"t":"q"}}},"p2":[{"s":{"t":"q"}}]}}' );
     next = jp('/q/p2/-/s/t').set(next,'q');
     expect(str(next)).toBe('{"a":4,"s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}},"q":{"p":{"r":{"s":{"t":"q"}}},"p2":[{"s":{"t":"q"}},{"s":{"t":"q"}}]}}');
+    next = jp('/a').set(next,'q');
+    expect(str(next)).toBe('{"a":"q","s":{"0":1,"1":0,"5":"x","x":"q"},"x":{"z":5,"y":{}},"q":{"p":{"r":{"s":{"t":"q"}}},"p2":[{"s":{"t":"q"}},{"s":{"t":"q"}}]}}');
   });
 
   it("toString", function() {

@@ -151,13 +151,26 @@ describe("JsonPointer", function() {
     });
     //on_anynode
     expect(dfwalk).toEqual([
-        '/', { a : 3, x : { q : [ 3, { z : 0 } ] } },
-        '/a', 3,
-        '/x', { q : [ 3, { z : 0 } ] },
-        '/x/q', [ 3, { z : 0 } ],
-        '/x/q/0', 3,
-        '/x/q/1', { z : 0 },
-        '/x/q/1/z', 0 ]);
+      '/', { a : 3, x : { q : [ 3, { z : 0 } ] } },
+      '/a', 3,
+      '/x', { q : [ 3, { z : 0 } ] },
+      '/x/q', [ 3, { z : 0 } ],
+      '/x/q/0', 3,
+      '/x/q/1', { z : 0 },
+      '/x/q/1/z', 0 ]);
+    dfwalk = [];
+    immutils.walk(obj,function(jp,v){
+      if( jp.path.length > 2 ){
+        return false;
+      }
+      dfwalk.push(jp.toString());
+      dfwalk.push(v);
+    });
+    //on_anynode
+    expect(dfwalk).toEqual([
+      '/', { a : 3, x : { q : [ 3, { z : 0 } ] } },
+      '/a', 3,
+      '/x', { q : [ 3, { z : 0 } ] }, ]);
     dfwalk = [];
     //on_leaf
     immutils.walk(obj, undefined, function(jp,v){

@@ -210,10 +210,40 @@ JsonPointer.prototype.set = function (obj, value) {
   var k = this._key(i+1,last);
   last[k] = value;
   return clones[0];
+};
+JsonPointer.prototype.child=function(n){
+  var newPath = this.path.slice(this.root ? 1 : 0);
+  newPath.push(n);
+  return new JsonPointer(newPath);
+};
+
+function walk( obj, on_anynode, on_leaf) {
+  _walk(on_anynode, on_leaf, new JsonPointer('/'), obj);
+}
+
+function _walk(on_anynode, on_leaf, jp, obj ) {
+  if( false === (on_anynode && on_anynode(jp,obj))){
+    return;
+  }
+  if (Array.isArray(obj)) {
+    var l = obj.length;
+    for (var i = 0; i < l; i++) {
+      _walk(on_anynode, on_leaf, jp.child('' + i), obj[i] );
+    }
+  } else if (isPlainObj(obj)) {
+    for (var k in obj) {
+      if (obj.hasOwnProperty(k)) {
+        _walk(on_anynode, on_leaf, jp.child(k), obj[k] );
+      }
+    }
+  } else {
+    on_leaf && on_leaf(jp,obj);
+  }
 }
 
 module.exports = {
   JsonPointer: JsonPointer ,
+  walk: walk,
   private: {
     isDigit: isDigit,
     isArrayLike: isArrayLike,

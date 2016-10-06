@@ -142,6 +142,33 @@ describe("JsonPointer", function() {
       expect(s).toBe(jp(s).toString());
     });
   });
+  it("walk", function() {
+    var dfwalk = [];
+    var obj = {a:3,x:{q:[3,{z:0}]}};
+    immutils.walk(obj,function(jp,v){
+      dfwalk.push(jp.toString());
+      dfwalk.push(v);
+    });
+    //on_anynode
+    expect(dfwalk).toEqual([
+        '/', { a : 3, x : { q : [ 3, { z : 0 } ] } },
+        '/a', 3,
+        '/x', { q : [ 3, { z : 0 } ] },
+        '/x/q', [ 3, { z : 0 } ],
+        '/x/q/0', 3,
+        '/x/q/1', { z : 0 },
+        '/x/q/1/z', 0 ]);
+    dfwalk = [];
+    //on_leaf
+    immutils.walk(obj, undefined, function(jp,v){
+      dfwalk.push(jp.toString());
+      dfwalk.push(v);
+    });
+    expect(dfwalk).toEqual([
+      '/a', 3,
+      '/x/q/0', 3,
+      '/x/q/1/z', 0 ]);
+  });
 
 });
 

@@ -182,6 +182,26 @@ describe("JsonPointer", function() {
       '/x/q/0', 3,
       '/x/q/1/z', 0 ]);
   });
+  it("sibling-parent-child", function() {
+    var obj = {a:3,x:{q:[3,{z:0}]}};
+    var a = jp('/x').sibling('a');
+    expect(a.get(obj)).toBe(3);
+    var root = a.parent() ;
+    expect(root.toString()).toBe('/');
+    expect(function(){root.parent()})
+        .toThrow(new Error("Root pointer can't have parent"));
+    expect(function(){root.sibling('x')})
+        .toThrow(new Error("Root pointer cannot have siblings n=x"));
+    a = root.child('a') ;
+    expect(a.get(obj)).toBe(3);
+    var x_q = jp('/x/q/z').parent();
+    expect(x_q.toString()).toBe('/x/q');
+    expect(x_q.get(obj)).toEqual( [ 3, { z : 0 } ] );
+    x_q = jp('/x').child('q');
+    expect(x_q.toString()).toBe('/x/q');
+
+
+  });
 
 });
 

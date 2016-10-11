@@ -105,12 +105,12 @@ function identity(v){
 function JsonPointer (p) {
   if (typeof p === 'string') {
     this.path = p.split('/').map(unescape);
-  } else if (Array.isArray(p)) {
+  } else if ( Array.isArray(p) ) {
     this.path = p;
   }else{
     throw new Error('Dont know how to construct JSON pointer from:' + p);
   }
-  if (this.path[0] !== '') {
+  if ( this.path.length < 2 || this.path[0] !== '') {
     throw new Error('JSON pointer has to start with "/"');
   }
   this.root = this.path.length === 2 && this.path[1] === '';
@@ -211,14 +211,38 @@ JsonPointer.prototype.set = function (obj, value) {
   last[k] = value;
   return clones[0];
 };
+
 JsonPointer.prototype.child=function(n){
   var newPath = this.path.slice(this.root ? 1 : 0);
   newPath.push(n);
   return new JsonPointer(newPath);
 };
 
+JsonPointer.prototype.sibling=function(n){
+  if(this.root){
+    throw new Error('Root pointer cannot have siblings n='+n)
+  }
+  var newPath = this.path.slice(0,this.path.length-1);
+  newPath.push(n);
+  return new JsonPointer(newPath);
+};
+
+const ROOT = new JsonPointer(['','']);
+
+JsonPointer.prototype.parent=function(){
+  if(this.root){
+    throw new Error("Root pointer can't have parent");
+  }
+  var len = this.path.length;
+  if(len == 2){
+    return ROOT;
+  }
+  return new JsonPointer(this.path.slice(0,len-1));
+};
+
+
 function walk( obj, on_anynode, on_leaf) {
-  _walk(on_anynode, on_leaf, new JsonPointer('/'), obj);
+  _walk(on_anynode, on_leaf, ROOT, obj);
 }
 
 function _walk(on_anynode, on_leaf, jp, obj ) {

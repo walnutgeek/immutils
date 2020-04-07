@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/walnutgeek/immutils#readme",
   "devDependencies": {
-    "codecov": "^1.0.1",
+    "codecov": ">=3.6.5",
     "istanbul": "^0.4.5",
     "jasmine": "^2.5.2",
     "jasmine-node": "^1.14.5"
